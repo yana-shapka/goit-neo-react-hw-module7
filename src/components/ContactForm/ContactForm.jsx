@@ -1,9 +1,10 @@
 import css from './ContactForm.module.css';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { useId } from 'react';
+import {ErrorMessage, Field, Form, Formik} from 'formik';
+import {useId} from 'react';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import {useDispatch} from 'react-redux';
+import {addContact} from '../../redux/contactsOps';
+import {toast} from 'react-toastify';
 
 const customSchema = Yup.object().shape({
   name: Yup.string()
@@ -13,6 +14,10 @@ const customSchema = Yup.object().shape({
   number: Yup.string()
     .min(3, 'Number must be at least 3 characters long.')
     .max(50, 'Number must be no more than 50 characters long.')
+    .matches(
+      /^[0-9\(\)\+\-\s]*$/,
+      'Number can only contain numbers, spaces, parentheses, + and - characters.'
+    )
     .required('Number is required'),
 });
 
@@ -24,11 +29,12 @@ const ContactForm = () => {
   const handleSubmit = (values, actions) => {
     dispatch(addContact(values));
     actions.resetForm();
+    toast.success('Contact added successfully!');
   };
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{name: '', number: ''}}
       onSubmit={handleSubmit}
       validationSchema={customSchema}
     >

@@ -1,0 +1,14 @@
+.loaderWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.loaderWrapper p {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: black;
+  text-align: center;
+}
